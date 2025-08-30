@@ -51,26 +51,32 @@ document.addEventListener('DOMContentLoaded', function() {
                 method: 'POST',
                 body: formData
             })
-            .then(response => response.json())
-            .then(data => {
-                showLoading(false);
-                console.log('Web3Forms Response:', data);
-                
-                if (data.success) {
-                    showMessage('success', 'Your message has been sent. Thank you!');
-                    contactForm.reset();
-                    console.log('✅ Email sent successfully!');
-                } else {
-                    // Handle spam detection
-                    if (data.message && data.message.includes('spam')) {
-                        showMessage('error', 'Message was flagged as spam. Please try again with different content or contact us directly.');
-                        console.error('❌ Spam detected:', data.message);
-                    } else {
-                        showMessage('error', 'Failed to send message. Please try again.');
-                        console.error('❌ Web3Forms Error:', data);
-                    }
-                }
-            })
+                         .then(response => {
+                 console.log('Response status:', response.status);
+                 if (!response.ok) {
+                     throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                 }
+                 return response.json();
+             })
+             .then(data => {
+                 showLoading(false);
+                 console.log('Web3Forms Response:', data);
+                 
+                 if (data.success) {
+                     showMessage('success', 'Your message has been sent. Thank you!');
+                     contactForm.reset();
+                     console.log('✅ Email sent successfully!');
+                 } else {
+                     // Handle spam detection
+                     if (data.message && data.message.includes('spam')) {
+                         showMessage('error', 'Message was flagged as spam. Please try again with different content or contact us directly.');
+                         console.error('❌ Spam detected:', data.message);
+                     } else {
+                         showMessage('error', 'Failed to send message. Please try again.');
+                         console.error('❌ Web3Forms Error:', data);
+                     }
+                 }
+             })
             .catch(error => {
                 showLoading(false);
                 showMessage('error', 'An error occurred. Please try again.');
