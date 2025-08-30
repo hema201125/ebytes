@@ -40,14 +40,6 @@ document.addEventListener('DOMContentLoaded', function() {
             formData.set('access_key', WEB3FORMS_ACCESS_KEY);
             formData.set('from_name', 'eBytes Technology Contact Form');
             
-            // Remove honeypot field if it exists in the form
-            if (formData.has('honeypot')) {
-                formData.delete('honeypot');
-            }
-            
-            // Try to disable honeypot completely
-            formData.set('honeypot', 'disabled');
-            
             // Use subject directly from input
             const cleanSubject = subject || 'New Contact Form Submission';
             formData.set('subject', cleanSubject);
