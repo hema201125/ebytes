@@ -25,14 +25,25 @@ document.addEventListener('DOMContentLoaded', function() {
         contactForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // Get form data
-            const formData = new FormData(this);
-            const name = formData.get('name');
-            const email = formData.get('email');
-            const subject = formData.get('subject');
-            const message = formData.get('message');
-            
-            // Validate form data
+                         // Get form data
+             const formData = new FormData(this);
+             const name = formData.get('name');
+             const email = formData.get('email');
+             const subject = formData.get('subject');
+             const message = formData.get('message');
+             
+                          // Ensure subject is properly set for Web3Forms
+             formData.set('subject', subject || 'Contact Form Submission');
+             
+             // Debug: Log what we're sending
+             console.log('📧 Form data being sent:', {
+                 name: name,
+                 email: email,
+                 subject: subject,
+                 message: message
+             });
+             
+             // Validate form data
             if (!name || !email || !subject || !message) {
                 showMessage('error', 'Please fill in all fields');
                 return;
@@ -61,11 +72,19 @@ document.addEventListener('DOMContentLoaded', function() {
              .then(data => {
                  showLoading(false);
                  console.log('Web3Forms Response:', data);
+                 console.log('Response details:', {
+                     success: data.success,
+                     message: data.message,
+                     email: data.email,
+                     timestamp: data.timestamp
+                 });
                  
                  if (data.success) {
                      showMessage('success', 'Your message has been sent. Thank you!');
                      contactForm.reset();
                      console.log('✅ Email sent successfully!');
+                     console.log('📧 Check your email at: president@ebytestechnology.com');
+                     console.log('📧 Also check spam/junk folder!');
                  } else {
                      // Handle spam detection
                      if (data.message && data.message.includes('spam')) {
