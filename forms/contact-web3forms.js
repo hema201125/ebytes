@@ -61,8 +61,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     contactForm.reset();
                     console.log('✅ Email sent successfully!');
                 } else {
-                    showMessage('error', 'Failed to send message. Please try again.');
-                    console.error('❌ Web3Forms Error:', data);
+                    // Handle spam detection
+                    if (data.message && data.message.includes('spam')) {
+                        showMessage('error', 'Message was flagged as spam. Please try again with different content or contact us directly.');
+                        console.error('❌ Spam detected:', data.message);
+                    } else {
+                        showMessage('error', 'Failed to send message. Please try again.');
+                        console.error('❌ Web3Forms Error:', data);
+                    }
                 }
             })
             .catch(error => {
