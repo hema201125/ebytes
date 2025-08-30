@@ -25,31 +25,29 @@ document.addEventListener('DOMContentLoaded', function() {
         contactForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
-                                      // Get form data
+                         // Get form data
              const formData = new FormData(this);
              const name = formData.get('name');
              const email = formData.get('email');
-             const userSubject = formData.get('subject');
+             const subject = formData.get('subject');
              const message = formData.get('message');
              
-             // Create custom subject with user's name and subject
-             const customSubject = `New enquiry from eBytes Technology contact form - ${name}: ${userSubject}`;
-             formData.set('subject', customSubject);
+                          // Ensure subject is properly set for Web3Forms
+             formData.set('subject', subject || 'Contact Form Submission');
              
              // Debug: Log what we're sending
              console.log('📧 Form data being sent:', {
                  name: name,
                  email: email,
-                 userSubject: userSubject,
-                 customSubject: customSubject,
+                 subject: subject,
                  message: message
              });
              
              // Validate form data
-             if (!name || !email || !userSubject || !message) {
-                 showMessage('error', 'Please fill in all fields');
-                 return;
-             }
+            if (!name || !email || !subject || !message) {
+                showMessage('error', 'Please fill in all fields');
+                return;
+            }
             
             if (!isValidEmail(email)) {
                 showMessage('error', 'Please enter a valid email address');
