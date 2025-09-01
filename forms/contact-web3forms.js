@@ -88,28 +88,22 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(data => {
                 showLoading(false);
                 console.log('Web3Forms Response:', data);
-                console.log('Response details:', {
-                    success: data.success,
-                    message: data.message,
-                    email: data.email,
-                    timestamp: data.timestamp
-                });
                 
-                if (data.success) {
+                // Check for success in the response
+                if (data.success === true) {
                     showMessage('success', 'Your message has been sent. Thank you!');
                     contactForm.reset();
                     console.log('✅ Email sent successfully!');
                     console.log('📧 Check your email at: president@ebytestechnology.com');
                     console.log('📧 Also check spam/junk folder!');
                 } else {
-                    // Handle spam detection
+                    // Handle different error cases
                     if (data.message && data.message.includes('spam')) {
                         showMessage('error', 'Message was flagged as spam. Please try again with different content or contact us directly.');
                         console.error('❌ Spam detected:', data.message);
-                        console.log('💡 Tips to avoid spam detection:');
-                        console.log('   - Write a longer, more detailed message');
-                        console.log('   - Avoid repetitive text or generic phrases');
-                        console.log('   - Use natural language and proper grammar');
+                    } else if (data.message) {
+                        showMessage('error', data.message);
+                        console.error('❌ Web3Forms Error:', data.message);
                     } else {
                         showMessage('error', 'Failed to send message. Please try again.');
                         console.error('❌ Web3Forms Error:', data);
