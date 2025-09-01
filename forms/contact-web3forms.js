@@ -130,11 +130,17 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     function showLoading(show) {
-        const loadingDiv = document.querySelector('.loading');
         const submitButton = document.querySelector('button[type="submit"]');
         
-        if (loadingDiv) {
-            loadingDiv.style.display = show ? 'block' : 'none';
+        if (show) {
+            showMessage('loading', 'Loading...');
+        } else {
+            // Clear loading message
+            const loadingDiv = document.querySelector('.loading');
+            if (loadingDiv) {
+                loadingDiv.style.display = 'none';
+                loadingDiv.textContent = '';
+            }
         }
         
         if (submitButton) {
@@ -145,18 +151,31 @@ document.addEventListener('DOMContentLoaded', function() {
     function showMessage(type, message) {
         const errorDiv = document.querySelector('.error-message');
         const successDiv = document.querySelector('.sent-message');
+        const loadingDiv = document.querySelector('.loading');
         
-        // Hide all message divs
-        if (errorDiv) errorDiv.style.display = 'none';
-        if (successDiv) successDiv.style.display = 'none';
+        // Hide ALL message divs first
+        if (errorDiv) {
+            errorDiv.style.display = 'none';
+            errorDiv.textContent = '';
+        }
+        if (successDiv) {
+            successDiv.style.display = 'none';
+            successDiv.textContent = '';
+        }
+        if (loadingDiv) {
+            loadingDiv.style.display = 'none';
+        }
         
-        // Show appropriate message
+        // Show only the appropriate message
         if (type === 'error' && errorDiv) {
             errorDiv.textContent = message;
             errorDiv.style.display = 'block';
         } else if (type === 'success' && successDiv) {
             successDiv.textContent = message;
             successDiv.style.display = 'block';
+        } else if (type === 'loading' && loadingDiv) {
+            loadingDiv.textContent = message;
+            loadingDiv.style.display = 'block';
         }
     }
     
