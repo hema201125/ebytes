@@ -91,8 +91,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log('Success value:', data.success, 'Type:', typeof data.success);
                 
                 // Check for success in the response - Web3Forms returns success: true
-                if (data.success === true || data.success === "true" || data.success === 1) {
-                    console.log('✅ Success detected, showing success message');
+                if (data.success === true) {
+                    console.log('✅ Success detected (boolean true), showing success message');
+                    showMessage('success', 'Your message has been sent. Thank you!');
+                    contactForm.reset();
+                    console.log('✅ Email sent successfully!');
+                    console.log('📧 Check your email at: president@ebytestechnology.com');
+                    console.log('📧 Also check spam/junk folder!');
+                } else if (data.success === "true") {
+                    console.log('✅ Success detected (string true), showing success message');
                     showMessage('success', 'Your message has been sent. Thank you!');
                     contactForm.reset();
                     console.log('✅ Email sent successfully!');
@@ -100,6 +107,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     console.log('📧 Also check spam/junk folder!');
                 } else {
                     console.log('❌ Success not detected, showing error message');
+                    console.log('Data received:', JSON.stringify(data));
                     // Handle different error cases
                     if (data.message && data.message.includes('spam')) {
                         showMessage('error', 'Message was flagged as spam. Please try again with different content or contact us directly.');
